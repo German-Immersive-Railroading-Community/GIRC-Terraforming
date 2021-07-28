@@ -1,5 +1,6 @@
 package eu.girc.terra.init;
 
+import eu.girc.terra.TerraUtil;
 import eu.girc.terra.item.TerraformItem;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -12,12 +13,22 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class GIRCClient {
+	
+	private static double d1;
+	private static double d2;
+	private static double d3;
+
+	public static void render(final BlockPos pos1) {
+		RenderGlobal.drawSelectionBoundingBox(Block.FULL_BLOCK_AABB.offset(((double)pos1.getX()) - d1, ((double)pos1.getY()) - d2, ((double)pos1.getZ()) - d3), 0, 1, 0, 1);
+	}
+	
+	public static void renderArea(final BlockPos pos1, final BlockPos pos2) {
+		RenderGlobal.drawSelectionBoundingBox(new AxisAlignedBB(BlockPos.ORIGIN, pos2.subtract(pos1).add(1, 2, 1)).offset(((double)pos1.getX()) - d1, ((double)pos1.getY()) - d2, ((double)pos1.getZ()) - d3), 0, 1, 0, 1);
+	}
 	
 	@SubscribeEvent
 	public static void renderOverlay(final RenderWorldLastEvent evt) {
@@ -33,24 +44,18 @@ public class GIRCClient {
 			if(nbt.hasKey(TerraformItem.BLOCKPOS1) && nbt.hasKey(TerraformItem.BLOCKPOS2)) {
 				final BlockPos pos1 = NBTUtil.getPosFromTag(nbt.getCompoundTag(TerraformItem.BLOCKPOS1));
 				final BlockPos pos2 = NBTUtil.getPosFromTag(nbt.getCompoundTag(TerraformItem.BLOCKPOS2));								
-	            GlStateManager.enableBlend();
-	            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-	            GlStateManager.glLineWidth(2.0F);
-	            GlStateManager.disableTexture2D();
-	            GlStateManager.depthMask(false);
 
-	            double part = evt.getPartialTicks();
-	            
-                double d1 = sp.lastTickPosX + (sp.posX - sp.lastTickPosX) * part;
-                double d2 = sp.lastTickPosY + (sp.posY - sp.lastTickPosY) * part;
-                double d3 = sp.lastTickPosZ + (sp.posZ - sp.lastTickPosZ) * part;
-                final Vec3d nrmPos1 = new Vec3d(pos1.getX() - d1, pos1.getY() - d2, pos1.getZ() - d3);
-                final Vec3d nrmPos2 = new Vec3d(pos2.getX() - d1, pos2.getY() - d2, pos2.getZ() - d3);
-				RenderGlobal.drawSelectionBoundingBox(new AxisAlignedBB(nrmPos1, nrmPos2.subtract(nrmPos1)) , 0, 1, 0, 1.0f);
+	            final double part = evt.getPartialTicks();
+	            d1 = sp.lastTickPosX + (sp.posX - sp.lastTickPosX) * part;
+	        	d2 = sp.lastTickPosY + (sp.posY - sp.lastTickPosY) * part;
+	        	d3 = sp.lastTickPosZ + (sp.posZ - sp.lastTickPosZ) * part;
+
+                GlStateManager.disableTexture2D();
+                {
+                	TerraUtil.generatePatches(nbt, GIRCClient::renderArea);
+                }
+                GlStateManager.enableTexture2D();
  
-				GlStateManager.disableBlend();
-				GlStateManager.depthMask(true);
-	            GlStateManager.enableTexture2D();
 			}
 		}
 	}

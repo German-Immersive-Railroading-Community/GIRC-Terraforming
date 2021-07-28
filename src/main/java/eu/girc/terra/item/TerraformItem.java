@@ -49,6 +49,7 @@ public class TerraformItem extends BasicItem {
 			if(nbt.hasKey(BLOCKPOS2))
 				return EnumActionResult.FAIL;
 			nbt.setTag(BLOCKPOS2, NBTUtil.createPosTag(pos));
+			return EnumActionResult.SUCCESS;
 		}
 		nbt.setTag(BLOCKPOS1, NBTUtil.createPosTag(pos));
 		return EnumActionResult.SUCCESS;
