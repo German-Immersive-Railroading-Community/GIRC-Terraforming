@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -42,14 +41,6 @@ public class GIRCClient {
 			if(nbt == null)
 				return;
 			if(nbt.hasKey(TerraformItem.BLOCKPOS1) && nbt.hasKey(TerraformItem.BLOCKPOS2)) {
-				final BlockPos pos1 = NBTUtil.getPosFromTag(nbt.getCompoundTag(TerraformItem.BLOCKPOS1));
-				final BlockPos pos2 = NBTUtil.getPosFromTag(nbt.getCompoundTag(TerraformItem.BLOCKPOS2));								
-
-	            final double part = evt.getPartialTicks();
-	            d1 = sp.lastTickPosX + (sp.posX - sp.lastTickPosX) * part;
-	        	d2 = sp.lastTickPosY + (sp.posY - sp.lastTickPosY) * part;
-	        	d3 = sp.lastTickPosZ + (sp.posZ - sp.lastTickPosZ) * part;
-
                 GlStateManager.disableTexture2D();
                 {
                 	TerraUtil.generatePatches(nbt, GIRCClient::renderArea);

@@ -16,7 +16,7 @@ public class TerraformMain
     public static Logger logger;
 
     @SidedProxy(clientSide = "eu.girc.terra.proxy.ClientProxy", serverSide = "eu.girc.terra.proxy.CommonProxy")
-    private static CommonProxy proxy;
+    public static CommonProxy proxy;
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)

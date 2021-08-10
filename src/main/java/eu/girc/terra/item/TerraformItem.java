@@ -2,6 +2,7 @@ package eu.girc.terra.item;
 
 import java.util.List;
 
+import eu.girc.terra.TerraformMain;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,7 @@ public class TerraformItem extends BasicItem {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		this.onItemUse(playerIn, worldIn, null, handIn, null, 0,0,0);
+		playerIn.openGui(TerraformMain.MODID, 0, worldIn, 0, 0, 0);
 		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 	
