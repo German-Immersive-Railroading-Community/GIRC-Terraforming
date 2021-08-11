@@ -1,1 +1,33 @@
+#Items
 item.terraformitem.name=Terraforming Item
+
+#GUI
+gui.keyprompt=Press [LSHIFT] for more information!
+
+#Names
+property.xtype.name=X type
+property.ytype.name=Y type
+property.xofftype.name=X off
+property.yofftype.name=Y off
+property.xymergetype.name=YX merge
+property.oldmergetype.name=old merge
+property.xoffsettype.name=X offset
+property.yoffsettype.name=Y offset
+
+#Descriptions
+property.xtype.desc=Null
+property.ytype.desc=Null
+property.xofftype.desc=Null
+property.yofftype.desc=Null
+property.xymergetype.desc=Null
+property.oldmergetype.desc=Null
+property.xoffsettype.desc=Null
+property.yoffsettype.desc=Null
+
+#Values
+property.value.LINEAR=Linear
+property.value.PARABOLA=Parabola
+property.value.ADD=Add
+property.value.SUBTRACT=Subtract
+property.value.RVSUBTRACT=RVSubtract
+
