@@ -5,6 +5,7 @@ item.terraformitem.name=Terraforming Item
 gui.keyprompt=Press [LSHIFT] for more information!
 
 #Names
+property.page.name=Page
 property.xtype.name=X type
 property.ytype.name=Y type
 property.xofftype.name=X off
