@@ -30,11 +30,15 @@ public class GIRCClient {
 	}
 
 	public static void renderArea(final BlockPos pos1, final BlockPos pos2) {
+		if(pos1.equals(pos2)) {
+			render(pos1);
+			return;
+		}
 		RenderGlobal
 				.drawSelectionBoundingBox(
 						new AxisAlignedBB(BlockPos.ORIGIN, pos2.subtract(pos1).add(1, 2, 1)).offset(
 								((double) pos1.getX()) - d1, ((double) pos1.getY()) - d2, ((double) pos1.getZ()) - d3),
-						0, 1, 0, 1);
+						1, 0, 0, 1);
 	}
 
 	@SubscribeEvent
@@ -54,6 +58,11 @@ public class GIRCClient {
 			final NBTTagCompound nbt = stack.getTagCompound();
 			if (nbt == null)
 				return;
+
+            final double part = evt.getPartialTicks();
+            d1 = sp.lastTickPosX + (sp.posX - sp.lastTickPosX) * part;
+        	d2 = sp.lastTickPosY + (sp.posY - sp.lastTickPosY) * part;
+        	d3 = sp.lastTickPosZ + (sp.posZ - sp.lastTickPosZ) * part;
 			if (nbt.hasKey(TerraformItem.BLOCKPOS1) && nbt.hasKey(TerraformItem.BLOCKPOS2)) {
 				GlStateManager.disableTexture2D();
 				{

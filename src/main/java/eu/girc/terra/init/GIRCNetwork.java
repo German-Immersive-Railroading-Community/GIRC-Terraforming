@@ -2,10 +2,13 @@ package eu.girc.terra.init;
 
 import com.google.common.base.Charsets;
 
+import eu.girc.terra.TerraUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
@@ -21,8 +24,6 @@ public class GIRCNetwork {
 		FMLProxyPacket packet = event.getPacket();
 		ByteBuf payBuf = packet.payload();
 		EntityPlayerMP mp = ((NetHandlerPlayServer) event.getHandler()).player;
-//		World world = mp.world;
-//		MinecraftServer server = mp.getServer();
 		byte id = payBuf.readByte();
 		switch (id) {
 		case TER_NBT_SET:
@@ -43,6 +44,15 @@ public class GIRCNetwork {
 			final String name = payBuf.readCharSequence(lastVal, Charsets.UTF_8).toString();
 			comp.setInteger(name, payBuf.readInt());
 		}
+		final NBTTagList xList = new NBTTagList();
+		for (int i = 0; i < 128; i++) {
+			xList.appendTag(new NBTTagDouble(0));
+		}
+		while((lastVal = payBuf.readInt()) != 0xFFFFFFFF) {
+			final double val = payBuf.readDouble();
+			xList.set(lastVal, new NBTTagDouble(val));
+		}
+		comp.setTag(TerraUtil.ARGS, xList);
 		stack.setTagCompound(comp);
 	}
 	

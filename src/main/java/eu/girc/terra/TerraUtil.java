@@ -18,7 +18,7 @@ public class TerraUtil {
 	public static enum FunctionType {
 		LINEAR(1), PARABOLA(1);
 
-		final int parameterCount;
+		public final int parameterCount;
 
 		private FunctionType(final int parameterCount) {
 			this.parameterCount = parameterCount;
@@ -91,7 +91,7 @@ public class TerraUtil {
 
 		final byte[][] heightmap = new byte[Math.abs(diff.getX())][Math.abs(diff.getZ())];
 		Arrays.stream(heightmap).forEach(arr -> Arrays.fill(arr, cheight));
-
+		
 		for (int i = 0; i < heightmap.length; i++) {
 			final byte[] row = heightmap[i];
 			final byte xinfo = xfunction.apply(0,
